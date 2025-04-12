@@ -7,17 +7,18 @@ const Footer = () => {
       {/* Background effect */}
       <div className="absolute inset-0 bg-black/50 z-0"></div>
       
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="container max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-10">
           {/* Logo & Introduction */}
           <div className="col-span-1 md:col-span-1">
-            <div className="mb-6">
-              <div className="relative h-10">
-                <div className="absolute font-mono font-bold text-2xl text-white text-glow">
-                  <span className="text-neon-blue">Block</span>
-                  <span className="text-neon-pink">ai</span>
-                </div>
-              </div>
+            <div className="mb-6 flex justify-start pl-0">
+              <Image 
+                src="/blockai_logo.jpg" 
+                alt="Blockai Logo"
+                width={40}
+                height={40}
+                className="object-contain"
+              />
             </div>
             
             <p className="text-gray-400 text-sm mb-6">

@@ -23,16 +23,18 @@ const Header = () => {
         scrolled ? "bg-black/80 backdrop-blur-md py-2" : "bg-transparent py-4"
       }`}
     >
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="container max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center">
-            <div className="relative h-10 w-40">
-              <div className="absolute font-mono font-bold text-2xl text-white text-glow">
-                <span className="text-neon-blue">Block</span>
-                <span className="text-neon-pink">ai</span>
-              </div>
-            </div>
+          <Link href="/" className="flex items-center pl-0 cursor-pointer">
+            <Image 
+              src="/blockai_logo.jpg" 
+              alt="Blockai Logo"
+              width={40}
+              height={40}
+              className="object-contain"
+              priority
+            />
           </Link>
 
           {/* Desktop Navigation */}
@@ -41,7 +43,7 @@ const Header = () => {
               <Link 
                 key={index} 
                 href={`#${index === 0 ? "" : item.toLowerCase().replace(" ", "-")}`}
-                className="text-foreground hover:text-neon-blue transition-colors font-mono tracking-wider"
+                className="text-base text-muted-foreground hover:text-white transition-colors font-light tracking-wide cursor-pointer"
               >
                 {item}
               </Link>
@@ -50,7 +52,7 @@ const Header = () => {
 
           {/* Mobile Menu Button */}
           <button 
-            className="md:hidden flex items-center" 
+            className="md:hidden flex items-center cursor-pointer" 
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
             <svg 
@@ -74,13 +76,13 @@ const Header = () => {
       {/* Mobile Menu */}
       {mobileMenuOpen && (
         <div className="md:hidden bg-black/90 backdrop-blur-lg border-t border-neon-purple/20">
-          <div className="container mx-auto px-4 py-4">
+          <div className="container max-w-[1200px] mx-auto px-4 py-4">
             <nav className="flex flex-col space-y-4">
               {["Home", "Services", "Case Studies", "Team", "Technology", "FAQ", "Contact"].map((item, index) => (
                 <Link 
                   key={index} 
                   href={`#${index === 0 ? "" : item.toLowerCase().replace(" ", "-")}`}
-                  className="text-foreground hover:text-neon-blue transition-colors py-2 font-mono tracking-wider"
+                  className="text-base text-muted-foreground hover:text-white transition-colors font-light tracking-wide cursor-pointer py-2"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {item}

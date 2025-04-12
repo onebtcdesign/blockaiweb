@@ -87,14 +87,12 @@ const CaseStudies = () => {
       <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-black to-transparent z-0"></div>
       <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-black to-transparent z-0"></div>
       
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="container max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 font-mono">
-            <span className="text-white">Our</span>
-            <span className="text-neon-pink"> Case </span>
-            <span className="text-white">Studies</span>
+          <h2 className="text-3xl font-semibold mb-3 bg-gradient-to-r from-foreground via-foreground/80 to-foreground bg-clip-text text-transparent">
+            Our Case Studies
           </h2>
-          <p className="text-lg text-gray-300 max-w-2xl mx-auto">
+          <p className="text-sm text-muted-foreground max-w-2xl mx-auto">
             We collaborate with top Web3 projects, providing innovative solutions to help them succeed in the blockchain space
           </p>
         </div>
@@ -104,7 +102,7 @@ const CaseStudies = () => {
           {categories.map((category, index) => (
             <button
               key={index}
-              className={`px-4 py-2 rounded-full font-medium transition-all duration-300 ${
+              className={`px-4 py-2 rounded-full font-medium transition-all duration-300 cursor-pointer ${
                 activeCategory === category
                   ? "bg-neon-purple text-white neon-border"
                   : "bg-black/30 text-gray-300 border border-white/10 hover:border-neon-purple/50"

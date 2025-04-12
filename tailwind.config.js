@@ -28,6 +28,13 @@ module.exports = {
           xl: '5rem',
           '2xl': '6rem',
         },
+        screens: {
+          sm: '640px',
+          md: '768px',
+          lg: '1024px',
+          xl: '1200px',
+          '2xl': '1200px',
+        },
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
