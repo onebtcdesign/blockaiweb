@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, Mail } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
@@ -156,35 +156,6 @@ const Faq = () => {
             />
           ))}
         </div>
-
-        {/* Contact Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          className="max-w-md mx-auto mt-12 p-6 rounded-lg text-center"
-        >
-          <div className="inline-flex items-center justify-center p-1.5 rounded-full mb-4">
-            <Mail className="h-4 w-4" />
-          </div>
-          <p className="text-sm font-medium text-foreground mb-1">
-            Still have questions?
-          </p>
-          <p className="text-xs text-muted-foreground mb-4">
-            Didn't find what you were looking for? Please contact us directly
-          </p>
-          <Button 
-            size="sm" 
-            onClick={() => {
-              const contactSection = document.getElementById('contact');
-              if (contactSection) {
-                contactSection.scrollIntoView({ behavior: 'smooth' });
-              }
-            }}
-          >
-            Contact Us
-          </Button>
-        </motion.div>
       </div>
     </section>
   );
