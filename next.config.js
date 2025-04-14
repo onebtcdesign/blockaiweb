@@ -4,6 +4,9 @@ const nextConfig = {
   output: 'standalone',
   reactStrictMode: true,
   poweredByHeader: false,
+  images: {
+    domains: ['images.unsplash.com'],
+  },
   eslint: {
     // 为部署时忽略 ESLint 错误
     ignoreDuringBuilds: true,
