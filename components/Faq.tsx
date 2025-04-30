@@ -72,7 +72,7 @@ const faqData = [
 const Faq = () => {
   return (
     <section
-      className="py-36 w-full bg-gradient-to-b from-transparent via-muted/50 to-transparent"
+      className="py-36 w-full relative z-10"
       id="faq"
     >
       <div className="container max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">

@@ -17,8 +17,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Blockai - Web3 开发服务门户",
-  description: "专注于为 Crypto/Web3 项目提供一站式产品设计、前后端开发与运营服务",
+  title: "Blockai",
+  description: "Focused on providing one-stop product design, full-stack development, and operation services for Crypto/Web3 projects",
   keywords: "web3, blockchain, crypto, development, design, dapp, nft, defi",
 };
 

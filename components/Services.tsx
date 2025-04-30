@@ -352,8 +352,11 @@ const Services = () => {
   };
 
   return (
-    <section className="py-40 relative" id="services">
-      {/* Background effect */}
+    <section className="py-40 relative module-background" id="services">
+      {/* 背景渐变 */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black via-black/90 to-neutral-900 z-0"></div>
+      
+      {/* 网格背景 */}
       <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] bg-center opacity-5 z-0"></div>
       
       <div className="container max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">

@@ -299,8 +299,11 @@ const TechCategoryItem = ({ category }: TechCategoryItemProps) => {
 
 const Technology = () => {
   return (
-    <section className="py-36 relative" id="technology">
-      {/* Background effect */}
+    <section className="py-36 relative module-background" id="technology">
+      {/* 背景渐变 */}
+      <div className="absolute inset-0 bg-gradient-to-b from-neutral-900/90 via-neutral-900/80 to-black/70 z-0"></div>
+      
+      {/* 网格背景 */}
       <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] bg-center opacity-5 z-0"></div>
       
       <div className="container max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
