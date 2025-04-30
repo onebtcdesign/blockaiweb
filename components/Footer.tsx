@@ -58,9 +58,7 @@ const Footer = () => {
           {/* Logo & Social Icons */}
           <div className="flex flex-col items-center lg:items-start">
             <motion.div 
-              className="mb-6"
-              whileHover={{ scale: 1.05 }}
-              transition={{ type: "spring", stiffness: 400, damping: 10 }}
+              className="mb-6 flex items-center gap-3"
             >
               <Image 
                 src="/blockai_logo.jpg" 
@@ -69,6 +67,10 @@ const Footer = () => {
                 height={40}
                 className="object-contain border border-gray-700"
               />
+              <div className="flex flex-col">
+                <span className="text-white text-xl font-semibold">Blockai</span>
+                <span className="text-gray-400 text-xs">Crafting Your Vision into Web3 Reality</span>
+              </div>
             </motion.div>
             
             <div className="flex space-x-4 mb-6">
@@ -167,7 +169,7 @@ const Footer = () => {
             className="text-sm text-gray-400 font-light tracking-wide"
             whileHover={{ color: "#9ca3af", transition: { duration: 0.3 } }}
           >
-            &copy; {new Date().getFullYear()} Blockai • ICP Registry 2025-06-18
+            &copy; {new Date().getFullYear()} Blockai. All Rights Reserved.
           </motion.p>
         </div>
       </div>
