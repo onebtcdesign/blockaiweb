@@ -12,11 +12,9 @@ import CaseStudies from "@/components/CaseStudies";
 import Team from "@/components/Team";
 import Technology from "@/components/Technology";
 import Faq from "@/components/Faq";
-import Contact from "@/components/Contact";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ScrollAnimationWrapper from "@/components/ui/ScrollAnimationWrapper";
-import CryptoWeekly from "@/components/CryptoWeekly";
 
 // Loading bar component
 const LoadingBar = ({ isNavigating }: { isNavigating: boolean }) => (
@@ -94,10 +92,6 @@ export default function Home() {
             </ScrollAnimationWrapper>
             <div className="module-connector-bottom"></div>
           </div>
-          
-          <Contact />
-          
-          <CryptoWeekly />
         </main>
         
         <Footer />

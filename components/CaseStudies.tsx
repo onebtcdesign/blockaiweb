@@ -28,7 +28,7 @@ const caseStudies = [
   {
     id: 3,
     title: "DMPay",
-    category: "Wallet",
+    category: "OCT",
     image: "/dmpay.png",
     description: "Fast, simple, and secure transactions with a New Zealand-registered company you can trust.",
     technologies: ["React Native", "Solana", "Ethereum", "GraphQL"],

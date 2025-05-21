@@ -1,52 +1,87 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { Home, Zap, MessageSquare, LucideIcon } from "lucide-react";
+import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
-interface NavItem {
-  name: string;
-  url: string;
-  icon: LucideIcon;
-}
-
 const Header = () => {
-  const [scrolled, setScrolled] = useState(false);
-  const [activeTab, setActiveTab] = useState("Home");
   const [isMobile, setIsMobile] = useState(false);
+  const [language, setLanguage] = useState<"en" | "zh">("en");
+  const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const [showAITooltip, setShowAITooltip] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
+  const mobileButtonRef = useRef<HTMLButtonElement>(null);
 
-  const navItems: NavItem[] = [
-    { name: "Home", url: "/", icon: Home },
-    { name: "AI", url: "#", icon: Zap },
-    { name: "Contact", url: "#contact", icon: MessageSquare }
-  ];
-
+  // Prevent body scrolling when mobile menu is open
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
-
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-
-    handleScroll();
-    handleResize();
-    
-    window.addEventListener("scroll", handleScroll);
-    window.addEventListener("resize", handleResize);
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
     
     return () => {
-      window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("resize", handleResize);
+      document.body.style.overflow = '';
     };
-  }, []);
+  }, [mobileMenuOpen]);
 
   useEffect(() => {
-    // Hide AI tooltip after 2 seconds
+    const handleResize = () => {
+      const mobile = window.innerWidth < 768;
+      setIsMobile(mobile);
+      if (!mobile && mobileMenuOpen) {
+        setMobileMenuOpen(false);
+      }
+    };
+    
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 10);
+    };
+
+    handleResize();
+    handleScroll(); // Initial check
+    
+    window.addEventListener("resize", handleResize);
+    window.addEventListener("scroll", handleScroll);
+    
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [mobileMenuOpen]);
+
+  useEffect(() => {
+    // Close dropdown when clicking outside
+    const handleClickOutside = (event: MouseEvent) => {
+      if (showLanguageDropdown) {
+        setShowLanguageDropdown(false);
+      }
+      
+      // Close mobile menu when clicking outside
+      if (
+        mobileMenuOpen && 
+        mobileMenuRef.current && 
+        mobileButtonRef.current && 
+        !mobileMenuRef.current.contains(event.target as Node) && 
+        !mobileButtonRef.current.contains(event.target as Node)
+      ) {
+        setMobileMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showLanguageDropdown, mobileMenuOpen]);
+
+  // Hide AI tooltip after a delay
+  useEffect(() => {
     if (showAITooltip) {
       const timer = setTimeout(() => {
         setShowAITooltip(false);
@@ -56,86 +91,195 @@ const Header = () => {
     }
   }, [showAITooltip]);
 
-  return (
-    <header className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
-      scrolled ? "header-scroll" : "bg-transparent"
-    }`}>
-      <div className="container max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 pt-4 flex flex-col items-center">
-        {/* Centered Tubelight NavBar */}
-        <div className="self-center">
-          <div className="flex items-center gap-3 bg-background/5 border border-border backdrop-blur-lg py-1 px-1 rounded-full shadow-lg">
-            {navItems.map((item) => {
-              const Icon = item.icon;
-              const isActive = activeTab === item.name;
+  const setLanguageOption = (lang: "en" | "zh") => {
+    setLanguage(lang);
+    setShowLanguageDropdown(false);
+  };
 
-              return (
-                <div key={item.name} className="relative">
-                  <Link
-                    href={item.url}
+  const handleNavigationClick = (item: { name: string; url: string }) => {
+    if (item.name === "AI") {
+      setShowAITooltip(true);
+    } else {
+      setMobileMenuOpen(false);
+    }
+  };
+
+  const navItems = [
+    { name: "Home", url: "/" },
+    { name: "AI", url: "/ai" },
+    { name: "Alpha Tool", url: "/alpha-tool" }
+  ];
+
+  return (
+    <>
+      {/* Mobile Navigation Menu - Below header in code but visually behind header due to z-index */}
+      {isMobile && (
+        <div 
+          ref={mobileMenuRef}
+          className={`fixed inset-0 top-0 bg-black/95 backdrop-blur-md z-[90] transition-all duration-300 ${
+            mobileMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
+          }`}
+        >
+          <div className="flex flex-col h-full pt-24 p-6 overflow-y-auto">
+            {/* Navigation Items */}
+            <nav className="mb-8">
+              <ul className="space-y-6">
+                {navItems.map((item) => (
+                  <li key={item.name}>
+                    <Link 
+                      href={item.name === "AI" ? "#" : item.url}
+                      onClick={() => handleNavigationClick(item)}
+                      className={cn(
+                        "text-lg font-medium block py-2 transition-colors duration-200",
+                        pathname === item.url 
+                          ? "text-primary" 
+                          : "text-gray-300 hover:text-white"
+                      )}
+                    >
+                      {item.name}
+                      {item.name === "AI" && (
+                        <span className="ml-2 text-xs text-gray-500">Coming Soon...</span>
+                      )}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+            
+            {/* Language Selector */}
+            <div className="mt-auto pt-4 border-t border-gray-800">
+              <p className="text-sm text-gray-500 mb-4">Language</p>
+              <div className="space-y-3">
+                <button
+                  onClick={() => { setLanguageOption("en"); setMobileMenuOpen(false); }}
+                  className={`w-full text-left px-3 py-2 rounded-md text-lg ${language === "en" ? "bg-gray-800 text-white" : "text-gray-400"}`}
+                >
+                  English
+                </button>
+                <button
+                  onClick={() => { setLanguageOption("zh"); setMobileMenuOpen(false); }}
+                  className={`w-full text-left px-3 py-2 rounded-md text-lg ${language === "zh" ? "bg-gray-800 text-white" : "text-gray-400"}`}
+                >
+                  简体中文
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Header - Always on top with highest z-index */}
+      <header className={cn(
+        "fixed top-0 left-0 w-full z-[100] flex justify-between items-center px-6 py-4 transition-all duration-300",
+        scrolled 
+          ? "bg-background/80 backdrop-blur-md border-b border-gray-800/50"
+          : mobileMenuOpen ? "bg-black" : "bg-transparent" 
+      )}>
+        {/* Left: Logo */}
+        <div className="flex items-center relative z-[101]">
+          <Link href="/" className="flex items-center">
+            <Image 
+              src="/blockai_logo.jpg" 
+              alt="BlockAI Logo"
+              width={40} 
+              height={40}
+              className="rounded object-contain"
+            />
+          </Link>
+        </div>
+
+        {/* Middle: Navigation - Desktop Only */}
+        {!isMobile && (
+          <nav className="flex items-center mx-auto">
+            <ul className="flex space-x-6">
+              {navItems.map((item) => (
+                <li key={item.name} className="relative">
+                  <Link 
+                    href={item.name === "AI" ? "#" : item.url}
                     onClick={(e) => {
-                      // For Home
-                      if (item.url === "/") {
+                      if (item.name === "AI") {
                         e.preventDefault();
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
-                        setActiveTab(item.name);
-                      }
-                      // For AI
-                      else if (item.name === "AI") {
-                        e.preventDefault();
-                        setActiveTab(item.name);
                         setShowAITooltip(true);
-                      }
-                      // For other links (Contact)
-                      else {
-                        setActiveTab(item.name);
                       }
                     }}
                     className={cn(
-                      "relative cursor-pointer text-sm font-semibold px-8 py-2 rounded-full transition-colors flex items-center gap-2",
-                      "text-foreground/80 hover:text-primary",
-                      isActive && "bg-muted text-primary",
+                      "relative px-2 py-1 text-sm font-medium transition-colors duration-200",
+                      pathname === item.url 
+                        ? "text-primary" 
+                        : "text-gray-400 hover:text-white"
                     )}
                   >
-                    <Icon size={16} className="md:mr-1" />
-                    <span className={isMobile ? "text-xs" : ""}>{item.name}</span>
-                    {isActive && (
-                      <motion.div
-                        layoutId="lamp"
-                        className="absolute inset-0 w-full bg-primary/5 rounded-full -z-10"
-                        initial={false}
-                        transition={{
-                          type: "spring",
-                          stiffness: 300,
-                          damping: 30,
-                        }}
-                      >
-                        <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-8 h-1 bg-primary rounded-t-full">
-                          <div className="absolute w-12 h-6 bg-primary/20 rounded-full blur-md -top-2 -left-2" />
-                          <div className="absolute w-8 h-6 bg-primary/20 rounded-full blur-md -top-1" />
-                          <div className="absolute w-4 h-4 bg-primary/20 rounded-full blur-sm top-0 left-2" />
-                        </div>
-                      </motion.div>
-                    )}
+                    {item.name}
                   </Link>
                   
                   {/* Coming soon tooltip for AI */}
                   {item.name === "AI" && showAITooltip && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 10 }}
-                      className="absolute top-full mt-2 left-1/2 -translate-x-1/2 bg-black/80 text-white text-xs py-1 px-3 rounded-md whitespace-nowrap"
-                    >
-                      Coming soon
-                    </motion.div>
+                    <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 px-3 py-1 bg-gray-800 text-white text-xs rounded-md whitespace-nowrap z-50">
+                      Coming Soon...
+                    </div>
                   )}
-                </div>
-              );
-            })}
+                </li>
+              ))}
+            </ul>
+          </nav>
+        )}
+
+        {/* Right: Language Dropdown - Desktop Only or Mobile Menu Button */}
+        {!isMobile ? (
+          <div className="relative z-[101]">
+            <button
+              onClick={() => setShowLanguageDropdown(!showLanguageDropdown)}
+              className="px-3 py-1 border border-gray-700 rounded-md text-sm font-medium transition-colors duration-200 hover:bg-gray-800 flex items-center gap-1"
+            >
+              {language === "en" ? "English" : "简体中文"}
+              <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                width="12" 
+                height="12" 
+                viewBox="0 0 24 24" 
+                fill="none" 
+                stroke="currentColor" 
+                strokeWidth="2" 
+                className={`transition-transform duration-200 ${showLanguageDropdown ? 'rotate-180' : ''}`}
+              >
+                <path d="M6 9l6 6 6-6" />
+              </svg>
+            </button>
+
+            {showLanguageDropdown && (
+              <div className="absolute right-0 mt-1 w-32 bg-gray-900 border border-gray-700 rounded-md shadow-lg py-1 z-50">
+                <button
+                  onClick={() => setLanguageOption("en")}
+                  className={`w-full text-left px-3 py-2 text-sm ${language === "en" ? "text-primary" : "text-gray-300"} hover:bg-gray-800`}
+                >
+                  English
+                </button>
+                <button
+                  onClick={() => setLanguageOption("zh")}
+                  className={`w-full text-left px-3 py-2 text-sm ${language === "zh" ? "text-primary" : "text-gray-300"} hover:bg-gray-800`}
+                >
+                  简体中文
+                </button>
+              </div>
+            )}
           </div>
-        </div>
-      </div>
-    </header>
+        ) : (
+          /* Mobile Menu Button */
+          <button
+            ref={mobileButtonRef}
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="flex items-center justify-center w-10 h-10 focus:outline-none z-[101]"
+            aria-label="Toggle menu"
+          >
+            <div className="relative w-6 h-4">
+              <span className={`absolute h-0.5 w-full bg-white transition-all duration-300 ${mobileMenuOpen ? 'opacity-0' : 'opacity-100'}`} style={{ top: '50%', transform: 'translateY(-50%)' }}></span>
+              <span className={`absolute h-0.5 w-full bg-white transition-all duration-300 ${mobileMenuOpen ? 'rotate-45' : 'rotate-0'}`} style={{ top: mobileMenuOpen ? '50%' : '0', transform: mobileMenuOpen ? 'translateY(-50%)' : 'none' }}></span>
+              <span className={`absolute h-0.5 w-full bg-white transition-all duration-300 ${mobileMenuOpen ? '-rotate-45' : 'rotate-0'}`} style={{ bottom: mobileMenuOpen ? '50%' : '0', transform: mobileMenuOpen ? 'translateY(50%)' : 'none' }}></span>
+            </div>
+          </button>
+        )}
+      </header>
+    </>
   );
 };
 
