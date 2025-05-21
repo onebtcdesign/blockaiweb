@@ -194,7 +194,7 @@ const Header = () => {
             <ul className="flex space-x-6">
               {navItems.map((item) => (
                 <li key={item.name} className="relative">
-                  <Link 
+                  <Link
                     href={item.name === "AI" ? "#" : item.url}
                     onClick={(e) => {
                       if (item.name === "AI") {
@@ -260,7 +260,7 @@ const Header = () => {
                 >
                   简体中文
                 </button>
-              </div>
+                </div>
             )}
           </div>
         ) : (
@@ -275,10 +275,10 @@ const Header = () => {
               <span className={`absolute h-0.5 w-full bg-white transition-all duration-300 ${mobileMenuOpen ? 'opacity-0' : 'opacity-100'}`} style={{ top: '50%', transform: 'translateY(-50%)' }}></span>
               <span className={`absolute h-0.5 w-full bg-white transition-all duration-300 ${mobileMenuOpen ? 'rotate-45' : 'rotate-0'}`} style={{ top: mobileMenuOpen ? '50%' : '0', transform: mobileMenuOpen ? 'translateY(-50%)' : 'none' }}></span>
               <span className={`absolute h-0.5 w-full bg-white transition-all duration-300 ${mobileMenuOpen ? '-rotate-45' : 'rotate-0'}`} style={{ bottom: mobileMenuOpen ? '50%' : '0', transform: mobileMenuOpen ? 'translateY(50%)' : 'none' }}></span>
-            </div>
+        </div>
           </button>
         )}
-      </header>
+    </header>
     </>
   );
 };
