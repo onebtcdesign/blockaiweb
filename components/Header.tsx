@@ -278,7 +278,7 @@ const Header = () => {
         </div>
           </button>
         )}
-    </header>
+      </header>
     </>
   );
 };
