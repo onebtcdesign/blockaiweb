@@ -56,7 +56,7 @@ const Footer = () => {
             <div className="flex items-center gap-4">
               <Image 
                 src="/blockai_logo.jpg" 
-                alt="Blockai" 
+                alt="BlockAI" 
                 width={48} 
                 height={48}
                 className="rounded"
@@ -155,7 +155,7 @@ const Footer = () => {
         {/* Copyright Section */}
         <div className="border-t border-gray-700 mt-12 pt-6">
           <p className="text-sm text-gray-500 text-center">
-            &copy; {new Date().getFullYear()} Blockai. All Rights Reserved.
+            &copy; {new Date().getFullYear()} BlockAI. All Rights Reserved.
           </p>
         </div>
       </div>
